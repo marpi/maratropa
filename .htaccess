@@ -1,0 +1,29 @@
+RewriteEngine On
+RewriteBase /
+
+ErrorDocument 404 /404.html
+RewriteRule ^(_js)($|/) - [L]
+
+Options -Indexes
+
+# If (SITE A DOMAIN or SITE A SUBDOMAIN) 
+RewriteCond %{HTTP_HOST} ^www\.maratropa\.com$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^maratropa\.com$ [NC]
+# make sure we haven't already rewritten this URI
+RewriteCond %{REQUEST_URI} !/maratropa/index.php
+# don't rewrite if the resource already exists
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# rewrite
+RewriteRule ^(.*)$ /index.php?user=$1 [L,QSA]
+
+# IF !(SITE A DOMAIN or SITE A SUBDOMAIN) 
+RewriteCond %{HTTP_HOST} !^www\.maratropa\.com$ [NC,OR]
+RewriteCond %{HTTP_HOST} !^maratropa\.com$ [NC]
+# make sure we haven't already rewritten this URI
+RewriteCond %{REQUEST_URI} !/index.php
+# don't rewrite if the resource already exists
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# rewrite
+RewriteRule ^(.*)$ /maratropa/index.php?user=$1 [L,QSA]
